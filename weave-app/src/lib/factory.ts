@@ -1,6 +1,4 @@
-import zip from 'lodash-es/zip'
-import initial from 'lodash-es/initial'
-import tail from 'lodash-es/tail'
+import { zip, initial, tail } from 'lodash'
 
 type Task = {
     pinOrder: number[]

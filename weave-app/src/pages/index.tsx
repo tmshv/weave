@@ -13,6 +13,7 @@ type OnChange = (event: FormEvent<HTMLTextAreaElement>) => void
 
 const Index: NextPage = props => {
     const [value, setValue] = useState('');
+    const [lines, setLines] = useState<[number, number][]>([]);
     const [pin, setPin] = useState([0])
     const [[min, max], setMinmax] = useState<[number, number]>([0, 100]);
 
@@ -29,6 +30,7 @@ const Index: NextPage = props => {
 
         // setMinmax([task.min, task.max])
         setMinmax([0, task.lines.length])
+        setLines(task.lines)
     }, [value])
 
     return (
@@ -39,7 +41,7 @@ const Index: NextPage = props => {
                 placeholder="Controlled Input"
                 rows={6}
             />
-            <Button onClick={() => alert("click")}>Run</Button>
+            {/* <Button onClick={() => alert("click")}>Run</Button> */}
             <Button onClick={fillSample}>Example</Button>
 
             <Slider
@@ -49,7 +51,9 @@ const Index: NextPage = props => {
                 onChange={({ value }) => value && setPin(value)}
             // onFinalChange={({ value }) => console.log(value)}
             ></Slider>
-            <WeaveCanvas></WeaveCanvas>
+            <WeaveCanvas
+                lines={lines.slice(0, pin[0])}
+            />
         </>
     );
 }
