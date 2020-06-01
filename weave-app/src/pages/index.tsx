@@ -1,11 +1,14 @@
 import { styled } from 'baseui';
 import dynamic from 'next/dynamic';
-import { StatefulInput } from 'baseui/input';
 import { TreeView, toggleIsExpanded } from "baseui/tree-view";
-import { useState } from 'react';
+import { useCallback, useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { Slider } from "baseui/slider";
+import { Textarea } from "baseui/textarea";
+import { Button } from "baseui/button";
+import { NextPage } from 'next';
+import { sampleCoords } from '@/sample';
+import { factory } from '@/lib/factory';
 
-// import { WeaveCanvas } from '@/components/WeaveCanvas';
 const WeaveCanvas = dynamic(import('@/components/WeaveCanvas').then(x => x.WeaveCanvas))
 
 export const S = () => {
@@ -90,15 +93,56 @@ const Tree: React.FC = () => {
     );
 }
 
-export default function Hello() {
+type OnChange = (event: FormEvent<HTMLTextAreaElement>) => void
+
+const Index: NextPage = props => {
+    const [value, setValue] = useState('');
+    const [pin, setPin] = useState([0])
+    const [[min, max], setMinmax] = useState<[number, number]>([0, 100]);
+
+    const onChange = useCallback<OnChange>(event => {
+        setValue(event.currentTarget.value)
+    }, [])
+
+    const fillSample = useCallback(() => {
+        setValue(sampleCoords())
+    }, [])
+
+    useEffect(() => {
+        const task = factory(value)
+
+        // setMinmax([task.min, task.max])
+        setMinmax([0, task.lines.length])
+    }, [value])
+
     return (
         <>
             {/* <Centered> */}
             {/* <StatefulInput /> */}
-            <Tree></Tree>
-            <S></S>
+            {/* <textarea
+            onChange={onChange}></textarea> */}
+            <Textarea
+                value={value}
+                onChange={onChange}
+                placeholder="Controlled Input"
+                rows={6}
+            />
+            <Button onClick={() => alert("click")}>Run</Button>
+            <Button onClick={fillSample}>Example</Button>
+
+            <Slider
+                value={pin}
+                min={min}
+                max={max}
+                onChange={({ value }) => value && setPin(value)}
+            // onFinalChange={({ value }) => console.log(value)}
+            ></Slider>
+            {/* <Tree></Tree> */}
+            {/* <S></S> */}
             <WeaveCanvas></WeaveCanvas>
             {/* </Centered> */}
         </>
     );
 }
+
+export default Index

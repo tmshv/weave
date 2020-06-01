@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "baseui": "^9.80.2",
+    "lodash-es": "^4.17.15",
     "next": "^9.4.4",
     "pixi.js": "^5.2.4",
     "react": "^16.13.1",
@@ -13,6 +14,7 @@
     "styletron-react": "^5.2.7"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.3",
     "@types/node": "^14.0.6",
     "@types/styletron-engine-atomic": "^1.1.0",
     "@types/styletron-react": "^5.0.2",
