@@ -1,8 +1,12 @@
 import { styled } from 'baseui';
+import dynamic from 'next/dynamic';
 import { StatefulInput } from 'baseui/input';
 import { TreeView, toggleIsExpanded } from "baseui/tree-view";
 import { useState } from 'react';
 import { Slider } from "baseui/slider";
+
+// import { WeaveCanvas } from '@/components/WeaveCanvas';
+const WeaveCanvas = dynamic(import('@/components/WeaveCanvas').then(x => x.WeaveCanvas))
 
 export const S = () => {
     const [value, setValue] = useState([27]);
@@ -21,14 +25,14 @@ export const S = () => {
                         };
                     }
                 },
-            //     Root: {
-            //         style: ({ $theme }) => {
-            //             return {
-            //                 outline: `${$theme.colors.warning600} solid`,
-            //                 backgroundColor: $theme.colors.warning600
-            //             };
-            //         }
-            //     }
+                //     Root: {
+                //         style: ({ $theme }) => {
+                //             return {
+                //                 outline: `${$theme.colors.warning600} solid`,
+                //                 backgroundColor: $theme.colors.warning600
+                //             };
+                //         }
+                //     }
             }}
         />
     );
@@ -93,6 +97,7 @@ export default function Hello() {
             {/* <StatefulInput /> */}
             <Tree></Tree>
             <S></S>
+            <WeaveCanvas></WeaveCanvas>
             {/* </Centered> */}
         </>
     );
