@@ -25,6 +25,7 @@ type Props = {
     lineColor: number
     lineThickness: number
     lineAlpha: number
+    highlightLast: boolean
 }
 
 const WeaveCanvas: React.FC<Props> = ({
@@ -98,15 +99,16 @@ const WeaveCanvas: React.FC<Props> = ({
 
         const pins = 100
         // const angleStep = (Math.PI * 2) / pins
-        for (const { end } of props.lines) {
+        props.lines.forEach((line, index, lines) => {
+            if (props.highlightLast && index === lines.length - 1) {
+                graphics.lineStyle(lineThickness + 2, 0xFFAA00, 1)
+            }
+
+            const { end } = line
             const { x, y } = end
-            // const angleStart = angleStep * s
-            // const angleEnd = angleStep * e
-            // const x = cx + Math.cos(angleEnd) * r
-            // const y = cy + Math.sin(angleEnd) * r
 
             graphics.lineTo(x, y);
-        }
+        })
 
         // graphics.lineTo(100, 400);
         // graphics.lineTo(50, 350);

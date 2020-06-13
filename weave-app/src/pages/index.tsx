@@ -3,6 +3,7 @@ import { useCallback, useState, FormEvent, useEffect } from 'react';
 import { Slider } from "baseui/slider";
 import { Textarea } from "baseui/textarea";
 import { Button } from "baseui/button";
+import { Checkbox } from "baseui/checkbox";
 import { NextPage } from 'next';
 import { sampleCoords } from '@/sample';
 import { factory } from '@/lib/factory';
@@ -20,6 +21,7 @@ const Index: NextPage = props => {
     const [currentLine, setCurrentLine] = useState([0])
     const [[min, max], setMinmax] = useState<[number, number]>([0, 100]);
     const [lineAlpha, setLineAlpha] = useState([1])
+    const [hightlightLast, setHL] = useState(false)
 
     const onChange = useCallback<OnChange>(event => {
         setValue(event.currentTarget.value)
@@ -33,7 +35,7 @@ const Index: NextPage = props => {
         const solution = factory(value)
 
         // setMinmax([task.min, task.max])
-        setMinmax([0, solution.lines.length])
+        setMinmax([1, solution.lines.length])
         setSolution(solution)
     }, [value])
 
@@ -63,6 +65,14 @@ const Index: NextPage = props => {
                 onChange={({ value }) => value && setLineAlpha(value)}
             ></Slider>
 
+            <Checkbox
+                checked={hightlightLast}
+                onChange={e => setHL(e.target.checked)}
+                // labelPlacement={LABEL_PLACEMENT.right}
+            >
+                Hightlight Current Line
+            </Checkbox>
+
             {!sol ? null : (
                 <WeaveCanvas
                     lines={sol.lines.slice(0, currentLine[0])}
@@ -70,6 +80,7 @@ const Index: NextPage = props => {
                     lineAlpha={lineAlpha[0]}
                     lineThickness={1}
                     lineColor={0}
+                    highlightLast={hightlightLast}
                 />
             )}
         </>
