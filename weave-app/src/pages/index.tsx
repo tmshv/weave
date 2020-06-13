@@ -6,6 +6,7 @@ import { Button } from "baseui/button";
 import { NextPage } from 'next';
 import { sampleCoords } from '@/sample';
 import { factory } from '@/lib/factory';
+import { WeaveSolution } from '@/types';
 
 const WeaveCanvas = dynamic(import('@/components/WeaveCanvas'), {
     ssr: false
@@ -15,9 +16,10 @@ type OnChange = (event: FormEvent<HTMLTextAreaElement>) => void
 
 const Index: NextPage = props => {
     const [value, setValue] = useState('');
-    const [lines, setLines] = useState<[number, number][]>([]);
-    const [pin, setPin] = useState([0])
+    const [sol, setSolution] = useState<WeaveSolution>();
+    const [currentLine, setCurrentLine] = useState([0])
     const [[min, max], setMinmax] = useState<[number, number]>([0, 100]);
+    const [lineAlpha, setLineAlpha] = useState([1])
 
     const onChange = useCallback<OnChange>(event => {
         setValue(event.currentTarget.value)
@@ -28,11 +30,11 @@ const Index: NextPage = props => {
     }, [])
 
     useEffect(() => {
-        const task = factory(value)
+        const solution = factory(value)
 
         // setMinmax([task.min, task.max])
-        setMinmax([0, task.lines.length])
-        setLines(task.lines)
+        setMinmax([0, solution.lines.length])
+        setSolution(solution)
     }, [value])
 
     return (
@@ -47,15 +49,29 @@ const Index: NextPage = props => {
             <Button onClick={fillSample}>Example</Button>
 
             <Slider
-                value={pin}
+                value={currentLine}
                 min={min}
                 max={max}
-                onChange={({ value }) => value && setPin(value)}
-            // onFinalChange={({ value }) => console.log(value)}
+                onChange={({ value }) => value && setCurrentLine(value)}
             ></Slider>
-            <WeaveCanvas
-                lines={lines.slice(0, pin[0])}
-            />
+
+            <Slider
+                value={lineAlpha}
+                min={0}
+                max={1}
+                step={0.01}
+                onChange={({ value }) => value && setLineAlpha(value)}
+            ></Slider>
+
+            {!sol ? null : (
+                <WeaveCanvas
+                    lines={sol.lines.slice(0, currentLine[0])}
+                    pins={sol.pins}
+                    lineAlpha={lineAlpha[0]}
+                    lineThickness={1}
+                    lineColor={0}
+                />
+            )}
         </>
     );
 }
