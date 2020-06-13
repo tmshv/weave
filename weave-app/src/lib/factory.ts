@@ -1,4 +1,4 @@
-import { zip, initial, tail } from 'lodash'
+import { zip, initial, tail, uniqBy } from 'lodash'
 import { Pin, WeaveLine, WeaveSolution } from '@/types'
 
 type Task = {
@@ -9,15 +9,15 @@ type Task = {
 }
 
 export function factory(text: string): WeaveSolution {
-    const coords = text
+    const ns = text
         .split(',')
         .map(Number)
-    const min = Math.min(...coords)
-    const max = Math.max(...coords)
+    const min = Math.min(...ns)
+    const max = Math.max(...ns)
 
-    const r = 240
+    const r = 220
     const angleStep = Math.PI * 2 / max
-    const pins = coords.map<Pin>(n => {
+    const ps = ns.map<Pin>(n => {
         const angle = n * angleStep
         return {
             id: n,
@@ -26,10 +26,11 @@ export function factory(text: string): WeaveSolution {
             label: `${n}`
         }
     })
-    const lines = pairs(pins).map<WeaveLine>(([start, end]) => ({
+    const lines = pairs(ps).map<WeaveLine>(([start, end]) => ({
         start,
         end,
     }))
+    const pins = uniqBy(ps, x => x.id)
 
     return {
         lines,

@@ -2,11 +2,28 @@ import * as PIXI from 'pixi.js';
 import { useEffect, useRef } from "react"
 import { WeaveLine, Pin } from "@/types"
 
+const style = new PIXI.TextStyle({
+    // fontFamily: 'Arial',
+    fontSize: 10,
+    // fontStyle: 'italic',
+    // fontWeight: 'bold',
+    // fill: ['#ffffff', '#00ff99'], // gradient
+    // stroke: '#4a1850',
+    // strokeThickness: 5,
+    // dropShadow: true,
+    // dropShadowColor: '#000000',
+    // dropShadowBlur: 4,
+    // dropShadowAngle: Math.PI / 6,
+    // dropShadowDistance: 6,
+    // wordWrap: true,
+    // wordWrapWidth: 440,
+})
+
 type Props = {
     lines: WeaveLine[]
     pins: Pin[]
     lineColor: number
-    lineThickness:number
+    lineThickness: number
     lineAlpha: number
 }
 
@@ -53,6 +70,7 @@ const WeaveCanvas: React.FC<Props> = ({
 
         return () => {
             app.view.remove()
+            app.destroy()
         }
     }, [])
 
@@ -102,15 +120,21 @@ const WeaveCanvas: React.FC<Props> = ({
         }
 
         const c = labels.current!
-        // c.re
-        // graphics.clear()
-
-        const basicText = new PIXI.Text('Basic text in pixi');
-        basicText.x = 50;
-        basicText.y = 100;
+        const l = new PIXI.Container()
+        c.addChild(l)
 
         for (const pin of props.pins) {
+            const p = new PIXI.Text(pin.label, style)
+            p.x = pin.x
+            p.y = pin.y
+            p.anchor.set(0.5)
 
+            l.addChild(p)
+        }
+
+        return () => {
+            c.removeChild(l)
+            l.destroy()
         }
     }, [props.pins])
 
