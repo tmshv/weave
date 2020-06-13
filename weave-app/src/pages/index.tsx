@@ -67,7 +67,7 @@ const Index: NextPage = props => {
 
             <Checkbox
                 checked={hightlightLast}
-                onChange={e => setHL(e.target.checked)}
+                onChange={e => setHL((e.target as any).checked)}
                 // labelPlacement={LABEL_PLACEMENT.right}
             >
                 Hightlight Current Line
