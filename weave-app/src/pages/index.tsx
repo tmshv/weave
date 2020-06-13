@@ -7,7 +7,7 @@ import { NextPage } from 'next';
 import { sampleCoords } from '@/sample';
 import { factory } from '@/lib/factory';
 
-const WeaveCanvas = dynamic(import('@/components/WeaveCanvas').then(x => x.WeaveCanvas), {
+const WeaveCanvas = dynamic(import('@/components/WeaveCanvas'), {
     ssr: false
 })
 

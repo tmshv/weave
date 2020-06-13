@@ -5,7 +5,7 @@ type Props = {
     lines: [number, number][]
 }
 
-export const WeaveCanvas: React.FC<Props> = props => {
+const WeaveCanvas: React.FC<Props> = props => {
     const ref = useRef<HTMLDivElement>()
     const g = useRef<PIXI.Graphics>()
 
@@ -72,3 +72,5 @@ export const WeaveCanvas: React.FC<Props> = props => {
         />
     )
 }
+
+export default WeaveCanvas
