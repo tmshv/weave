@@ -20,6 +20,7 @@ const style = new PIXI.TextStyle({
 })
 
 type Props = {
+    style?: React.CSSProperties
     lines: WeaveLine[]
     pins: Pin[]
     lineColor: number
@@ -41,12 +42,19 @@ const WeaveCanvas: React.FC<Props> = ({
     useEffect(() => {
         const resolution = window.devicePixelRatio
 
+        // const width = window.innerWidth
+        // const height = window.innerHeight
+
+        const rect = ref.current!.getBoundingClientRect()
+        const width = rect.width
+        const height = rect.height
+
         // The application will create a renderer using WebGL, if possible,
         // with a fallback to a canvas render. It will also setup the ticker
         // and the root stage PIXI.Container
         const app = new PIXI.Application({
-            width: 500,
-            height: 500,
+            width,
+            height,
             autoDensity: true,
             antialias: true,
             resolution,
@@ -58,8 +66,8 @@ const WeaveCanvas: React.FC<Props> = ({
         // document.body.appendChild(app.view);
         ref.current!.appendChild(app.view)
 
-        const cx = 250;
-        const cy = 250;
+        const cx = width / 2
+        const cy = height / 2
 
         g.current = new PIXI.Graphics();
         app.stage.addChild(g.current);
@@ -143,6 +151,7 @@ const WeaveCanvas: React.FC<Props> = ({
     return (
         <div
             ref={ref}
+            style={props.style}
         // style={{
         //     width: '100px',
         //     height: '100px',

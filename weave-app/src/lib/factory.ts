@@ -1,21 +1,18 @@
 import { zip, initial, tail, uniqBy } from 'lodash'
 import { Pin, WeaveLine, WeaveSolution } from '@/types'
 
-type Task = {
-    pinOrder: number[]
-    min: number,
-    max: number,
-    lines: [number, number][],
+type FactoryOptions = {
+    radius: number
 }
 
-export function factory(text: string): WeaveSolution {
+export function factory(text: string, options: FactoryOptions): WeaveSolution {
     const ns = text
         .split(',')
         .map(Number)
     const min = Math.min(...ns)
     const max = Math.max(...ns)
 
-    const r = 220
+    const r = options.radius
     const angleStep = Math.PI * 2 / max
     const ps = ns.map<Pin>(n => {
         const angle = n * angleStep
