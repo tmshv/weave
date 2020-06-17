@@ -74,6 +74,8 @@ const Index: NextPage = props => {
 
                 <div style={{
                     flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
                 }}>
                     <Textarea
                         value={value}
@@ -81,8 +83,6 @@ const Index: NextPage = props => {
                         placeholder="Controlled Input"
                         rows={6}
                     />
-                    {/* <Button onClick={() => alert("click")}>Run</Button> */}
-                    <Button onClick={fillSample}>Example</Button>
 
                     <Slider
                         value={currentLine}
@@ -114,6 +114,10 @@ const Index: NextPage = props => {
                     >
                         Hightlight Current Line
                     </Checkbox>
+
+                    <div style={{flex: 1}}></div>
+
+                    <Button onClick={fillSample}>Example</Button>
                 </div>
             </div>
         </>
