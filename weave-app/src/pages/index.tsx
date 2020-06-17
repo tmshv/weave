@@ -74,6 +74,8 @@ const Index: NextPage = props => {
 
                 <div style={{
                     flex: 1,
+                    padding: 12,
+
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
