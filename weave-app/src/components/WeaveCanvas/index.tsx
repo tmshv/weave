@@ -22,6 +22,7 @@ const style = new PIXI.TextStyle({
 type Props = {
     style?: React.CSSProperties
     lines: WeaveLine[]
+    toLine: number
     pins: Pin[]
     lineColor: number
     lineThickness: number
@@ -105,24 +106,21 @@ const WeaveCanvas: React.FC<Props> = ({
         graphics.lineStyle(lineThickness, lineColor, lineAlpha)
         graphics.moveTo(startX, startY)
 
-        const pins = 100
-        // const angleStep = (Math.PI * 2) / pins
-        props.lines.forEach((line, index, lines) => {
-            if (props.highlightLast && index === lines.length - 1) {
+        for (let i = 0; i < props.toLine; i++) {
+            const line = props.lines[i]
+
+            if (props.highlightLast && i === props.toLine-1) {
                 graphics.lineStyle(lineThickness + 2, 0xFFAA00, 1)
             }
 
             const { end } = line
             const { x, y } = end
 
-            graphics.lineTo(x, y);
-        })
+            graphics.lineTo(x, y)
+        }
 
-        // graphics.lineTo(100, 400);
-        // graphics.lineTo(50, 350);
-        // graphics.closePath();
         graphics.endFill();
-    }, [props.lines])
+    }, [props.lines, props.toLine, props.highlightLast])
 
     useEffect(() => {
         if (!props.pins.length) {
@@ -131,20 +129,29 @@ const WeaveCanvas: React.FC<Props> = ({
 
         const c = labels.current!
         const l = new PIXI.Container()
+        const g = new PIXI.Graphics()
+        c.addChild(g)
         c.addChild(l)
 
         for (const pin of props.pins) {
+            g.beginFill(0x000000)
+            g.drawCircle(pin.x, pin.y, 2)
+            g.endFill()
+
             const p = new PIXI.Text(pin.label, style)
             p.x = pin.x
             p.y = pin.y
-            p.anchor.set(0.5)
+            p.rotation = pin.angle
+            p.anchor.set(-0.25, 0.5)
 
             l.addChild(p)
         }
 
         return () => {
             c.removeChild(l)
+            c.removeChild(g)
             l.destroy()
+            g.destroy()
         }
     }, [props.pins])
 

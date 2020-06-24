@@ -42,6 +42,8 @@ const Index: NextPage = props => {
         setSolution(solution)
     }, [radius[0], value])
 
+    const cl = sol?.lines[currentLine[0] - 1]
+
     return (
         <>
             <div style={{
@@ -58,7 +60,9 @@ const Index: NextPage = props => {
                 }}>
                     {!sol ? null : (
                         <WeaveCanvas
-                            lines={sol.lines.slice(0, currentLine[0])}
+                            // lines={sol.lines.slice(0, currentLine[0])}
+                            lines={sol.lines}
+                            toLine={currentLine[0]}
                             pins={sol.pins}
                             lineAlpha={lineAlpha[0]}
                             lineThickness={1}
@@ -117,7 +121,13 @@ const Index: NextPage = props => {
                         Hightlight Current Line
                     </Checkbox>
 
-                    <div style={{flex: 1}}></div>
+                    {!cl ? null : (
+                        <div>
+                            <pre>{cl.start.label} - {cl.end.label}</pre>
+                        </div>
+                    )}
+
+                    <div style={{ flex: 1 }}></div>
 
                     <Button onClick={fillSample}>Example</Button>
                 </div>
