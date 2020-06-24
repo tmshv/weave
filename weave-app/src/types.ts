@@ -3,6 +3,7 @@ export type Pin = {
     label: string
     x: number
     y: number
+    angle: number
 }
 
 export type WeaveLine = {

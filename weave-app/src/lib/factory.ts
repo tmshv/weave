@@ -13,14 +13,15 @@ export function factory(text: string, options: FactoryOptions): WeaveSolution {
     const max = Math.max(...ns)
 
     const r = options.radius
-    const angleStep = Math.PI * 2 / max
+    const angleStep = Math.PI * 2 / (max + 1)
     const ps = ns.map<Pin>(n => {
         const angle = n * angleStep
         return {
             id: n,
             x: Math.cos(angle) * r,
             y: Math.sin(angle) * r,
-            label: `${n}`
+            label: `${n}`.padStart(3, '0'),
+            angle,
         }
     })
     const lines = pairs(ps).map<WeaveLine>(([start, end]) => ({
